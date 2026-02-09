@@ -1,0 +1,41 @@
+version: '3'
+
+volumes:
+  pg_data:
+  static:
+  media:
+
+services:
+  db:
+    image: postgres:13.10
+    env_file: .env
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+  backend:
+    image: gabella187/kittygram_backend
+    env_file: .env
+    volumes:
+      - media:/app/media
+      - static:/app/collected_static
+    depends_on:
+      - db
+  frontend:
+    image: gabella187/kittygram_frontend
+    volumes:
+      - static:/static
+    command: sh -c "cp -r /app/build/* /static/ && tail -f /dev/null"
+    depends_on:
+      - backend
+
+  gateway:
+    image: gabella187/kittygram_gateway
+    ports:
+      - "8000:80" # Какой порт открыть? Формат "host:container"
+    volumes:
+      - static:/static
+      - media:/media
+    depends_on:
+      - backend
+      - frontend
+
+
