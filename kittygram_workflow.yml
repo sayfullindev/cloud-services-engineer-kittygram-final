@@ -146,7 +146,7 @@ jobs:
   send_message:
     name: Send Telegram notification
     runs-on: ubuntu-latest
-    needs: deploy
+    needs: auto_tests
     
     steps:
       - name: Send message
