@@ -101,6 +101,7 @@ jobs:
             POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
             DB_HOST=${{ secrets.DB_HOST }}
             DB_PORT=${{ secrets.DB_PORT }}
+            SECRET_KEY=${{ secrets.SECRET_KEY }}
             EOF
       
       - name: Executing remote ssh commands to deploy
@@ -118,7 +119,6 @@ jobs:
             sleep 10
             sudo docker compose -f docker-compose.production.yml exec -T backend python manage.py migrate
             sudo docker compose -f docker-compose.production.yml exec -T backend python manage.py collectstatic --noinput
-            sudo docker compose -f docker-compose.production.yml exec -T backend cp -r /code/collected_static/. /app/collected_static/
 
   auto_tests:
     name: auto_tests
