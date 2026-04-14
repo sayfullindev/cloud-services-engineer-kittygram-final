@@ -56,7 +56,8 @@ resource "yandex_vpc_security_group" "main" {
 resource "yandex_compute_instance" "main" {
   name = "vm_kittygram"
   zone = "ru-central1-a"
-
+  allow_stopping_for_update = true
+  
   resources {
     cores         = 2
     memory        = 2
