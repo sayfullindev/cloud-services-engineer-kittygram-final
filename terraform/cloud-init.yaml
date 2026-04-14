@@ -1,0 +1,14 @@
+#cloud-config
+users:
+  - name: ubuntu
+    groups: sudo, docker
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    shell: /bin/bash
+
+packages:
+  - docker.io
+  - docker-compose-plugin
+
+runcmd:
+  - systemctl enable docker
+  - systemctl start docker
