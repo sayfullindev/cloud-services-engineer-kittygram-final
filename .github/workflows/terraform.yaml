@@ -35,7 +35,7 @@ jobs:
       - name: Terraform Init
         working-directory: ./terraform
         env:
-         TF_VAR_ssh_public_key: ${{ secrets.SSH_KEY }}
+         TF_VAR_ssh_public_key: ${{ secrets.SSH_PUBLIC_KEY }}
          YC_CLOUD_ID: ${{ secrets.YC_CLOUD_ID }}
          YC_FOLDER_ID: ${{ secrets.YC_FOLDER_ID }}
          YC_TOKEN: ${{ steps.get-iam-token.outputs.token }}
@@ -48,7 +48,7 @@ jobs:
         if: ${{ github.event.inputs.action == 'plan' }}
         run: terraform plan
         env:
-         TF_VAR_ssh_public_key: ${{ secrets.SSH_KEY }}
+         TF_VAR_ssh_public_key: ${{ secrets.SSH_PUBLIC_KEY }}
          YC_CLOUD_ID: ${{ secrets.YC_CLOUD_ID }}
          YC_FOLDER_ID: ${{ secrets.YC_FOLDER_ID }}
          YC_TOKEN: ${{ steps.get-iam-token.outputs.token }}
@@ -60,7 +60,7 @@ jobs:
         if: ${{ github.event.inputs.action == 'apply' }}
         run: terraform apply -auto-approve
         env:
-         TF_VAR_ssh_public_key: ${{ secrets.SSH_KEY }}
+         TF_VAR_ssh_public_key: ${{ secrets.SSH_PUBLIC_KEY }}
          YC_CLOUD_ID: ${{ secrets.YC_CLOUD_ID }}
          YC_FOLDER_ID: ${{ secrets.YC_FOLDER_ID }}
          YC_TOKEN: ${{ steps.get-iam-token.outputs.token }}
@@ -72,7 +72,7 @@ jobs:
         if: ${{ github.event.inputs.action == 'destroy' }}
         run: terraform destroy -auto-approve
         env:
-         TF_VAR_ssh_public_key: ${{ secrets.SSH_KEY }}
+         TF_VAR_ssh_public_key: ${{ secrets.SSH_PUBLIC_KEY }}
          YC_CLOUD_ID: ${{ secrets.YC_CLOUD_ID }}
          YC_FOLDER_ID: ${{ secrets.YC_FOLDER_ID }}
          YC_TOKEN: ${{ steps.get-iam-token.outputs.token }}
