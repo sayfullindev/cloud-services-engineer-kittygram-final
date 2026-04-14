@@ -1,0 +1,88 @@
+name: Terraform
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'Select the Terraform action'
+        required: true
+        default: 'plan'
+        type: choice
+        options:
+          - plan
+          - apply
+          - destroy
+jobs:
+  Terraform:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Get IAM Token
+        id: get-iam-token
+        uses: docker://ghcr.io/yc-actions/yc-iam-token-fed:1.0.0
+        with:
+          yc-sa-id: ${{ secrets.YC_SA_ID }}
+
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform
+
+      - name: Terraform Init
+        working-directory: ./terraform
+        env:
+         TF_VAR_access_key: ${{ secrets.S3_ACCESS_KEY_ID }}
+         TF_VAR_secret_key: ${{ secrets.S3_SECRET_ACCESS_KEY }}
+         TF_VAR_ssh_public_key: ${{ secrets.SSH_KEY }}
+         YC_CLOUD_ID: ${{ secrets.YC_CLOUD_ID }}
+         YC_FOLDER_ID: ${{ secrets.YC_FOLDER_ID }}
+         YC_TOKEN: ${{ steps.get-iam-token.outputs.token }}
+         AWS_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
+         AWS_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
+        run: terraform init
+
+      - name: Terraform Plan
+        working-directory: ./terraform
+        if: ${{ github.event.inputs.action == 'plan' }}
+        run: terraform plan
+        env:
+         TF_VAR_access_key: ${{ secrets.S3_ACCESS_KEY_ID }}
+         TF_VAR_secret_key: ${{ secrets.S3_SECRET_ACCESS_KEY }}
+         TF_VAR_ssh_public_key: ${{ secrets.SSH_KEY }}
+         YC_CLOUD_ID: ${{ secrets.YC_CLOUD_ID }}
+         YC_FOLDER_ID: ${{ secrets.YC_FOLDER_ID }}
+         YC_TOKEN: ${{ steps.get-iam-token.outputs.token }}
+         AWS_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
+         AWS_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
+
+      - name: Terraform Apply
+        working-directory: ./terraform
+        if: ${{ github.event.inputs.action == 'apply' }}
+        run: terraform apply -auto-approve
+        env:
+         TF_VAR_access_key: ${{ secrets.S3_ACCESS_KEY_ID }}
+         TF_VAR_secret_key: ${{ secrets.S3_SECRET_ACCESS_KEY }}
+         TF_VAR_ssh_public_key: ${{ secrets.SSH_KEY }}
+         YC_CLOUD_ID: ${{ secrets.YC_CLOUD_ID }}
+         YC_FOLDER_ID: ${{ secrets.YC_FOLDER_ID }}
+         YC_TOKEN: ${{ steps.get-iam-token.outputs.token }}
+         AWS_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
+         AWS_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
+
+      - name: Terraform Destroy
+        working-directory: ./terraform
+        if: ${{ github.event.inputs.action == 'destroy' }}
+        run: terraform destroy -auto-approve
+        env:
+         TF_VAR_access_key: ${{ secrets.S3_ACCESS_KEY_ID }}
+         TF_VAR_secret_key: ${{ secrets.S3_SECRET_ACCESS_KEY }}
+         TF_VAR_ssh_public_key: ${{ secrets.SSH_KEY }}
+         YC_CLOUD_ID: ${{ secrets.YC_CLOUD_ID }}
+         YC_FOLDER_ID: ${{ secrets.YC_FOLDER_ID }}
+         YC_TOKEN: ${{ steps.get-iam-token.outputs.token }}
+         AWS_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
+         AWS_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
