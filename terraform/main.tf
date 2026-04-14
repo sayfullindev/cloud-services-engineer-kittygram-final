@@ -76,7 +76,8 @@ resource "yandex_compute_instance" "main" {
   }
 
   metadata = {
-    ssh-keys = "ubuntu:${var.ssh_public_key}"
-    user-data = file("cloud-init.yaml")
+    user-data = templatefile("cloud-init.yaml", {
+      ssh_public_key = var.ssh_public_key
+    })
   }
 }

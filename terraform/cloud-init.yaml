@@ -4,6 +4,8 @@ users:
     groups: sudo, docker
     sudo: ALL=(ALL) NOPASSWD:ALL
     shell: /bin/bash
+    ssh_authorized_keys:
+      - ${ssh_public_key}
 
 packages:
   - docker.io
