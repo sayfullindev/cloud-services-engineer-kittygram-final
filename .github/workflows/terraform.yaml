@@ -35,8 +35,6 @@ jobs:
       - name: Terraform Init
         working-directory: ./terraform
         env:
-         TF_VAR_access_key: ${{ secrets.S3_ACCESS_KEY_ID }}
-         TF_VAR_secret_key: ${{ secrets.S3_SECRET_ACCESS_KEY }}
          TF_VAR_ssh_public_key: ${{ secrets.SSH_KEY }}
          YC_CLOUD_ID: ${{ secrets.YC_CLOUD_ID }}
          YC_FOLDER_ID: ${{ secrets.YC_FOLDER_ID }}
@@ -50,8 +48,6 @@ jobs:
         if: ${{ github.event.inputs.action == 'plan' }}
         run: terraform plan
         env:
-         TF_VAR_access_key: ${{ secrets.S3_ACCESS_KEY_ID }}
-         TF_VAR_secret_key: ${{ secrets.S3_SECRET_ACCESS_KEY }}
          TF_VAR_ssh_public_key: ${{ secrets.SSH_KEY }}
          YC_CLOUD_ID: ${{ secrets.YC_CLOUD_ID }}
          YC_FOLDER_ID: ${{ secrets.YC_FOLDER_ID }}
@@ -64,8 +60,6 @@ jobs:
         if: ${{ github.event.inputs.action == 'apply' }}
         run: terraform apply -auto-approve
         env:
-         TF_VAR_access_key: ${{ secrets.S3_ACCESS_KEY_ID }}
-         TF_VAR_secret_key: ${{ secrets.S3_SECRET_ACCESS_KEY }}
          TF_VAR_ssh_public_key: ${{ secrets.SSH_KEY }}
          YC_CLOUD_ID: ${{ secrets.YC_CLOUD_ID }}
          YC_FOLDER_ID: ${{ secrets.YC_FOLDER_ID }}
@@ -78,8 +72,6 @@ jobs:
         if: ${{ github.event.inputs.action == 'destroy' }}
         run: terraform destroy -auto-approve
         env:
-         TF_VAR_access_key: ${{ secrets.S3_ACCESS_KEY_ID }}
-         TF_VAR_secret_key: ${{ secrets.S3_SECRET_ACCESS_KEY }}
          TF_VAR_ssh_public_key: ${{ secrets.SSH_KEY }}
          YC_CLOUD_ID: ${{ secrets.YC_CLOUD_ID }}
          YC_FOLDER_ID: ${{ secrets.YC_FOLDER_ID }}

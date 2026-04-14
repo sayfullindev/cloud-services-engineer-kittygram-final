@@ -79,10 +79,3 @@ resource "yandex_compute_instance" "main" {
     ssh-keys = "ubuntu:${var.ssh_public_key}"
   }
 }
-
-
-resource "yandex_storage_bucket" "main" {
-  bucket     = "s3-sayfullindev"
-  access_key = var.access_key
-  secret_key = var.secret_key
-}
