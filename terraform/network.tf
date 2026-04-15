@@ -20,7 +20,7 @@ resource "yandex_vpc_security_group" "main" {
 
   ingress {
     protocol       = "TCP"
-    port           = 80
+    port           = 8000
     v4_cidr_blocks = ["0.0.0.0/0"]
   }
 
