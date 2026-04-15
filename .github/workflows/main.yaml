@@ -141,6 +141,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r ./backend/requirements.txt
 
+      - name: Update kittygram_domain in tests.yml
+        run: |
+          sed -i "s|kittygram_domain:.*|kittygram_domain: http://${{ secrets.HOST }}:8000|" tests.yml
+
       - name: Run connection and Docker Hub tests
         run: |
           pytest tests/test_connection.py tests/test_dockerhub_images.py
