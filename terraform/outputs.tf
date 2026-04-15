@@ -1,3 +1,4 @@
 output "vm_ip" {
-  value = yandex_compute_instance.main.network_interface[0].nat_ip_address
+  description = "Public IP address of the VM"
+  value       = yandex_compute_instance.main.network_interface[0].nat_ip_address
 }
