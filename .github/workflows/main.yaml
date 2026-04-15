@@ -77,6 +77,11 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v3
       
+      - name: Debug connection
+        run: |
+          echo "Connecting to: [${{ secrets.HOST }}]"
+          nc -zv -w 5 ${{ secrets.HOST }} 22 || echo "PORT 22 NOT REACHABLE from GitHub Actions"
+
       - name: Copy docker-compose.production.yml via ssh
         uses: appleboy/scp-action@master
         with:
