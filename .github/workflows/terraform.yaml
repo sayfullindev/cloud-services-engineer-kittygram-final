@@ -80,7 +80,9 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
         run: |
           IP=$(terraform output -raw vm_ip)
+          echo "VM IP: $IP"
           gh secret set HOST --body "$IP" --repo ${{ github.repository }}
+          echo "HOST secret updated"
 
       - name: Terraform Destroy
         working-directory: ./terraform
