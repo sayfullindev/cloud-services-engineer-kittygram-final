@@ -25,7 +25,6 @@ jobs:
       TF_VAR_ssh_public_key: ${{ secrets.SSH_PUBLIC_KEY }}
       YC_CLOUD_ID: ${{ secrets.YC_CLOUD_ID }}
       YC_FOLDER_ID: ${{ secrets.YC_FOLDER_ID }}
-      YC_TOKEN: ${{ steps.get-iam-token.outputs.token }}
       AWS_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
     steps:
@@ -37,6 +36,13 @@ jobs:
         uses: docker://ghcr.io/yc-actions/yc-iam-token-fed:1.0.0
         with:
           yc-sa-id: ${{ secrets.YC_SA_ID }}
+
+      - name: Export IAM Token
+        env:
+          TOKEN: ${{ steps.get-iam-token.outputs.token }}
+        run: |
+          echo "::add-mask::$TOKEN"
+          echo "YC_TOKEN=$TOKEN" >> $GITHUB_ENV
 
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v3
